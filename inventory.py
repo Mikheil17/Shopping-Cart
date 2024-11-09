@@ -14,9 +14,9 @@ class Inventory:
         
     def addToInventory(self, UserID, ISBN, Quantity, cost):
         pass # Insert a new item into the inventory
-    def updateItem(self, userID, ISBN, Quantity = none, cost):
+    def updateInventory(self, userID, ISBN, Quantity = none, cost):
         pass # Update any items
-    def removeItem(self, userID, ISBN):
+    def removeFromInventory(self, userID, ISBN):
         pass # Remove any items
 
     def close(self):
