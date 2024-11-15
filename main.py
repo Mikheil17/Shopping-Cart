@@ -62,6 +62,22 @@ def mainMenu(user, cart, inventory, history):
 
             print("Successful logout.")
 
+        ## viewing account info    
+        if(option == "1"):
+            user.viewAccountInformation()
+
+        ## viewing inventory info 
+        elif(option == "2"):
+           inventory.viewInventory()
+
+        ## viewing cart
+        elif(option == "3"):
+            cart.viewCart(user.userID)    
+
+        ## viewing order info
+        elif(option == "4"):
+            history.viewOrder(user.userID, orderID)  ##history.orderID NOT YET INITIALIZED 
+
         ## incorrect menu option
         else:
             print("That's not a menu option. Please try again.")
