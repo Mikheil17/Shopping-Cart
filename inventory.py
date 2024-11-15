@@ -8,13 +8,21 @@ class Inventory:
         self.database_name = database_name
     
     def viewInventory(self):
-        pass
-        # Retrieve all items in the inventory, optionally filtered by genre.
+        if userID:
+            query = "SELECT * FROM inventory WHERE userID = ?"
+            self.cursor.execute(query, (userID,))
+        else:
+            query = "SELECT * FROM inventory"
+            self.cursor.execute(query)
         
+        # Fetch and return all the rows in the result
+        rows = self.cursor.fetchall()
+        return rows
         
     def addToInventory(self, UserID, ISBN, Quantity, cost):
         pass # Insert a new item into the inventory
-    def updateInventory(self, userID, ISBN, Quantity = none, cost):
+        
+    def updateInventory(self, userID, ISBN, cost, Quantity = none):
         pass # Update any items
     def removeFromInventory(self, userID, ISBN):
         pass # Remove any items
