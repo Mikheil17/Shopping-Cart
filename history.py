@@ -53,9 +53,17 @@ class OrderHistory:
                 VALUES (?, ?, ?, ?, ?)
             """, (orderID, userID, itemNumber, cost, date))
         self.connection.commit()
+        return str(orderID)
     
     def addOrderItems(self, userID, orderID):
-        pass
+        self.cursor.execute("SELECT * FROM cart WHERE userID = ?", (userID))
+        items = self.cursor.fetchall()
+        for item in items:
+            self.cursor.execute("""
+                INSERT INTO OrderItems (orderID, ISBN, quantity)
+                VALUES (?, ?, ?)
+            """, (orderID, ISBN, quantity))
+            self.connection.commit()
     
     def close(self):
         # Close the database connection.
