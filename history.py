@@ -38,9 +38,12 @@ class OrderHistory:
         return self.cursor.fetchall()
     
     def viewOrder(self, userID, orderID):
-        # returns the OrderItems rows, connect with cart, finish after createOrder and addOrderItems
-        self.cursor.execute("SELECT cost, date FROM Orders WHERE userID = ? AND orderID = ?", (userID, orderID))
-        return self.cursor.fetchall()
+        confirmOrder = self.cursor.execute("SELECT userID FROM Orders WHERE orderID = ?", (orderID))
+        if confirmOrder != userID:
+            print("Unable to view. Your userID does not match the order you are trying to access.")
+        else:
+            self.cursor.execute("SELECT cost, date FROM Orders WHERE userID = ? AND orderID = ?", (userID, orderID))
+            return self.cursor.fetchall()
     
     def createOrder(self, userID, itemNumber, cost, date):
         orderID = random.randint()
