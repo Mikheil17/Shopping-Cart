@@ -33,17 +33,28 @@ class OrderHistory:
         self.connection.commit()
     
     def viewHistory(self, userID):
-        # returns all orders from a user, may be done 
         self.cursor.execute("SELECT * FROM Orders WHERE userID = ?", (userID))
-        return self.cursor.fetchall()
+        history = self.cursor.fetchall()
+        if history:
+            print(f"Orders for User ID {userID}:")
+            for orderID, cost, date in history:
+                print(f"OrderID: {orderID}, Cost: {cost}, Date: {date}")
+        else:
+            print(f"You have no orders, User ID {userID}.")
     
     def viewOrder(self, userID, orderID):
-        confirmOrder = self.cursor.execute("SELECT userID FROM Orders WHERE orderID = ?", (orderID))
+        self.cursor.execute("SELECT userID FROM Orders WHERE orderID = ?", (orderID))
+        confirmOrder = self.cursor.fetchone()
         if confirmOrder != userID:
             print("Unable to view. Your userID does not match the order you are trying to access.")
-        else:
-            self.cursor.execute("SELECT cost, date FROM Orders WHERE userID = ? AND orderID = ?", (userID, orderID))
-            return self.cursor.fetchall()
+            return
+        self.cursor.execute("SELECT ISBN, quantity FROM OrderItems WHERE orderID = ?", (orderID))
+        fullOrder = self.cursor.fetchall()
+        print("Ordered items: ")
+        for ISBN in fullOrder:
+            self.cursor.execute("SELECT Title, Author FROM Inventory WHERE ISBN = ?", (ISBN))
+            currentItem = self.cursor.fetchall()
+            print(f"{Title} by {Author}, Quantity: {quantity} \n")
     
     def createOrder(self, userID, itemNumber, cost, date):
         orderID = random.randint()
