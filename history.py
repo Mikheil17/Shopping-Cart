@@ -13,37 +13,38 @@ class OrderHistory:
     def createHistory(self):
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS Orders (
-                orderID TEXT,
-                userID TEXT,
-                itemNumber TEXT,
-                cost FLOAT,
-                date TEXT,
-                PRIMARY KEY (orderID),
-                FOREIGN KEY (userID)
+                OrderNumber varchar(6) NOT NULL,
+                UserID varchar(7) NOT NULL,
+                ItemNumber int(5),
+                Cost varchar(10),
+                Date varchar(25),
+                PRIMARY KEY(OrderNumber),
+                FOREIGN KEY(UserID) REFERENCES User(UserID)
             )
         """)
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS OrderItems (
-                orderID TEXT,
-                ISBN TEXT,
-                quantity INTEGER,
-                FOREIGN KEY (orderID, ISBN)
+                OrderNumber varchar(6) NOT NULL,
+                ISBN varchar(14) NOT NULL,
+                Quantity int(3),
+                FOREIGN KEY(OrderNumber) REFERENCES Orders(OrderNumber),
+                FOREIGN KEY(ISBN) REFERENCES Inventory(ISBN)
             )
         """)
         self.connection.commit()
     
     def viewHistory(self, userID):
-        self.cursor.execute("SELECT * FROM Orders WHERE userID = ?", (userID))
+        self.cursor.execute("SELECT * FROM Orders WHERE UserID = ?", (userID))
         history = self.cursor.fetchall()
         if history:
             print(f"Orders for User ID {userID}:")
             for orderID, cost, date in history:
-                print(f"OrderID: {orderID}, Cost: {cost}, Date: {date}")
+                print(f"OrderNumber: {orderID}, Cost: {cost}, Date: {date}")
         else:
             print(f"You have no orders, User ID {userID}.")
     
     def viewOrder(self, userID, orderID):
-        self.cursor.execute("SELECT userID FROM Orders WHERE orderID = ?", (orderID))
+        self.cursor.execute("SELECT UserID FROM Orders WHERE OrderNumber = ?", (orderID))
         confirmOrder = self.cursor.fetchone()
         if not confirmOrder:
             print("The order you are looking for could not be found. Please try again.")
@@ -52,7 +53,7 @@ class OrderHistory:
         if confirmOrder != userID:
             print("Unable to view. Your userID does not match the order you are trying to access.")
             return
-        self.cursor.execute("SELECT ISBN, quantity FROM OrderItems WHERE orderID = ?", (orderID))
+        self.cursor.execute("SELECT ISBN, quantity FROM OrderItems WHERE OrderNumber = ?", (orderID))
         fullOrder = self.cursor.fetchall()
         print("Ordered items: ")
         for ISBN in fullOrder:
@@ -67,7 +68,7 @@ class OrderHistory:
             orderID = random.randint()
             taken = self.viewOrder(userID, orderID)
         self.cursor.execute("""
-                INSERT INTO Orders (orderID, userID, itemNumber, cost, date)
+                INSERT INTO Orders (OrderNumber, UserID, ItemNumber, Cost, Date)
                 VALUES (?, ?, ?, ?, ?)
             """, (orderID, userID, itemNumber, cost, date))
         self.connection.commit()
@@ -78,7 +79,7 @@ class OrderHistory:
         items = self.cursor.fetchall()
         for item in items:
             self.cursor.execute("""
-                INSERT INTO OrderItems (orderID, ISBN, quantity)
+                INSERT INTO OrderItems (OrderNumber, ISBN, quantity)
                 VALUES (?, ?, ?)
             """, (orderID, ISBN, quantity))
             self.connection.commit()
