@@ -45,6 +45,10 @@ class OrderHistory:
     def viewOrder(self, userID, orderID):
         self.cursor.execute("SELECT userID FROM Orders WHERE orderID = ?", (orderID))
         confirmOrder = self.cursor.fetchone()
+        if not confirmOrder:
+            print("The order you are looking for could not be found. Please try again.")
+            break
+            
         if confirmOrder != userID:
             print("Unable to view. Your userID does not match the order you are trying to access.")
             return

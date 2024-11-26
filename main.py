@@ -79,7 +79,9 @@ def mainMenu(user, cart, inventory, history):
 
         # Option 4: View Order Information
         elif option == "4":
-            print("...")
+            print("Entering Order History...")
+            ordersMenu(user, history) # Opens the order management and history menu
+            
 
         # If the user enters an invalid option
         else:
@@ -148,7 +150,31 @@ def inventoryMenu(inventory):
         else:
             print("Invalid option. Please try again.")
 
+def ordersMenu(user, history):
+    while True:
+        print("\nOrders and History:")
+        print("0. Return to Main Menu")
+        print("1. View Order History")
+        print("2. View Order")
 
+        option = input("Enter your menu choice: ").strip()
+        print()
+
+        if option == "0":
+            print("Returning to main menu...")
+            break
+        
+        elif option == "1": # Viewing their order history
+            print("Viewing your orders...")
+            OrderHistory.viewHistory(user.userID)
+        
+        elif option == "2": # Viewing an order
+            individualOrder = input("Please enter the ID of the order you wish to view: ").strip()
+            print("Finding your order...")
+            OrderHistory.viewOrder(user.userID, individualOrder)
+        
+        else:
+            print("Invalid option. Please try again.")
 
 
 def main():
