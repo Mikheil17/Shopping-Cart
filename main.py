@@ -75,7 +75,8 @@ def mainMenu(user, cart, inventory, history):
 
         # Option 3: View Cart Information
         elif option == "3":
-            print("...")
+            print("Viewing Cart Information...")
+            cartMenu(user, cart) # Open the cart information menu
 
         # Option 4: View Order Information
         elif option == "4":
@@ -175,6 +176,67 @@ def ordersMenu(user, history):
         
         else:
             print("Invalid option. Please try again.")
+
+def cartMenu(user, cart):
+    while True:
+        print("\nCart Menu:")
+        print("0. Return to Main Menu")
+        print("1. View Cart")
+        print("2. Add Item to Cart")
+        print("3. Remove Item from Cart")
+        print("4. Edit Item Quantity in Cart")
+        print("5. Checkout")
+
+        option = input("Enter your menu choice: ").strip()
+        print()
+
+        if option == "0":
+            print("Returning to main menu...")
+            break
+
+        elif option == "1":  # View Cart
+            print("Viewing your cart...")
+            cart.viewCart(user.userID)  # Display the items in the user's cart
+
+        elif option == "2":  # Add Item to Cart
+            print("Adding item to your cart...")
+            ISBN = input("Enter the ISBN of the item to add: ").strip()
+            try:
+                quantity = int(input("Enter the quantity to add: ").strip())
+                if quantity <= 0:
+                    print("Quantity must be greater than 0.")
+                else:
+                    cart.addToCart(user.userID, ISBN, quantity)  # Add item to the cart
+            except ValueError:
+                print("Invalid quantity. Please enter a valid number.")
+
+        elif option == "3":  # Remove Item from Cart
+            print("Removing item from your cart...")
+            ISBN = input("Enter the ISBN of the item to remove: ").strip()
+            cart.removeFromCart(user.userID, ISBN)  # Remove the item from the cart
+
+        elif option == "4":  # Edit Item Quantity
+            print("Editing item quantity in your cart...")
+            ISBN = input("Enter the ISBN of the item to edit: ").strip()
+            try:
+                new_quantity = int(input("Enter the new quantity: ").strip())
+                if new_quantity <= 0:
+                    print("Quantity must be greater than 0.")
+                else:
+                    # Update the quantity by setting the new value
+                    cart.addToCart(user.userID, ISBN, new_quantity - cart.getItemQuantity(user.userID, ISBN))
+                    print(f"Quantity for ISBN {ISBN} updated to {new_quantity}.")
+            except ValueError:
+                print("Invalid quantity. Please enter a valid number.")
+
+        elif option == "5":  # Checkout
+            print("Proceeding to checkout...")
+            cart.checkOut(user.userID)  # Checkout the items in the cart
+
+        else:
+            print("Invalid option. Please try again.")
+
+        print()
 
 
 def main():
