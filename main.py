@@ -167,12 +167,12 @@ def ordersMenu(user, history):
         
         elif option == "1": # Viewing their order history
             print("Viewing your orders...")
-            OrderHistory.viewHistory(user.userID)
+            OrderHistory.viewHistory(history, user.userID)
         
         elif option == "2": # Viewing an order
-            individualOrder = input("Please enter the ID of the order you wish to view: ").strip()
+            individualOrder = input("Please enter the ID of the order you wish to view: ")
             print("Finding your order...")
-            OrderHistory.viewOrder(user.userID, individualOrder)
+            OrderHistory.viewOrder(history, user.userID, individualOrder)
         
         else:
             print("Invalid option. Please try again.")
