@@ -66,7 +66,9 @@ def mainMenu(user, cart, inventory, history):
 
         # Option 1: View Account Information
         elif option == "1":
-            print("...")
+            print("Viewing your account information...")
+            user.viewAccountInformation()  # View the account information
+
 
         # Option 2: View Inventory Information
         elif option == "2":
