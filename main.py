@@ -166,7 +166,7 @@ def cartMenu(user, cart):
                     print("Quantity must be greater than 0.")
                 else:
                     # Update the quantity by setting the new value
-                    cart.addToCart(user.userID, ISBN, new_quantity - cart.getItemQuantity(user.userID, ISBN))
+                    cart.addToCart(user.userID, ISBN, new_quantity)
                     print(f"Quantity for ISBN {ISBN} updated to {new_quantity}.")
             except ValueError:
                 print("Invalid quantity. Please enter a valid number.")

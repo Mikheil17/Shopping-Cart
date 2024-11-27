@@ -62,12 +62,21 @@ class OrderHistory:
             currentItem = self.cursor.fetchone()
             print(f"{currentItem[0]} by {currentItem[1]}, Quantity: {quantity}")
     
+    def randomOrder(self, userID, orderID):
+        self.cursor.execute("SELECT UserID FROM Orders WHERE OrderNumber = ?", (orderID,))
+        confirmOrder = self.cursor.fetchone()
+        if not confirmOrder:
+            return False
+        else:
+            return True
+
+    
     def createOrder(self, userID, itemNumber, cost, date):
         orderID = random.randint(100000, 999999)
-        taken = self.viewOrder(userID, orderID)
+        taken = self.randomOrder(userID, orderID)
         while taken:
             orderID = random.randint()
-            taken = self.viewOrder(userID, orderID)
+            taken = self.randomOrder(userID, orderID)
         self.cursor.execute("""
                 INSERT INTO Orders (OrderNumber, UserID, ItemNumber, Cost, Date)
                 VALUES (?, ?, ?, ?, ?)
@@ -76,9 +85,9 @@ class OrderHistory:
         return str(orderID)
     
     def addOrderItems(self, userID, orderID):
-        self.cursor.execute("SELECT * FROM cart WHERE userID = ?", (userID))
+        self.cursor.execute("SELECT * FROM cart WHERE userID = ?", (userID,))
         items = self.cursor.fetchall()
-        for item in items:
+        for personID, ISBN, quantity in items:
             self.cursor.execute("""
                 INSERT INTO OrderItems (OrderNumber, ISBN, quantity)
                 VALUES (?, ?, ?)

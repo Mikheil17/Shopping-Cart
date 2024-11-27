@@ -43,7 +43,7 @@ class Cart:
         if existing_item:
             # If the item exists, update its quantity
             self.cursor.execute("""
-                UPDATE cart SET quantity = quantity + ?
+                UPDATE cart SET quantity = ?
                 WHERE userID = ? AND ISBN = ?
             """, (quantity, userID, ISBN))
             print(f"Updated quantity of ISBN {ISBN} in the cart.")
@@ -86,7 +86,7 @@ class Cart:
         # Check inventory and update total cost
         for ISBN, quantity in cart_items:
             # Get cost per item from the inventory
-            inventory.cursor.execute("SELECT cost, Quantity FROM inventory WHERE ISBN = ?", (ISBN,))
+            inventory.cursor.execute("SELECT Price, Stock FROM inventory WHERE ISBN = ?", (ISBN,))
             inventory_data = inventory.cursor.fetchone()
 
             if not inventory_data:
@@ -103,7 +103,7 @@ class Cart:
             total_cost += cost * quantity
 
             # Decrease stock in the inventory
-            inventory.decreaseStock(None, ISBN, quantity)
+            inventory.decreaseStock(ISBN, quantity)
 
         # Create an order and get the generated orderID
         orderID = history.createOrder(userID, len(cart_items), total_cost, current_date)
@@ -112,7 +112,7 @@ class Cart:
         history.addOrderItems(userID, orderID)
 
         # Finalize the order cost in the Orders table
-        self.cursor.execute("UPDATE Orders SET cost = ? WHERE orderID = ?", (total_cost, orderID))
+        self.cursor.execute("UPDATE Orders SET Cost = ? WHERE OrderNumber = ?", (total_cost, orderID))
         self.connection.commit()
 
         # Clear the user's cart
