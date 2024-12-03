@@ -185,7 +185,7 @@ def inventoryMenu(inventory):
         print("0. Return to Main Menu")
         print("1. View All Inventory")
         print("2. Search Inventory by Title")
-        print("3. Decrease Stock for Item")
+        
 
         option = input("Enter your menu choice: ").strip()
         print()
@@ -214,24 +214,6 @@ def inventoryMenu(inventory):
                 print(f"\nSearching inventory by title:")
                 Title = input("Enter book title: ").strip()
                 inventory.searchInventory(Title)
-
-        elif option == "3":  # Decrease stock
-            print("Decreasing stock for an item...")
-            ISBN = input("Enter the ISBN of the item: ").strip()
-            Quantity = input("Enter quantity to decrease: ").strip()
-
-            try:
-                Quantity = int(Quantity)
-                if Quantity <= 0:
-                    print("Quantity must be greater than 0.")
-                    continue
-
-                inventory.decreaseStock(ISBN, Quantity)
-                print(f"Stock for ISBN '{ISBN}' successfully decreased by {Quantity}.")
-            except ValueError:
-                print("Invalid input. Please enter a valid number for quantity.")
-            input("\nPress Enter to return to the inventory menu.")
-
         else:
             print("Invalid option. Please try again.")
 
