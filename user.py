@@ -61,7 +61,6 @@ class User:
         ## successful login
         if(password == token):
             print("\nLogging user in...")
-
             ## set the class variables
             self.userID = userID
             self.loggedIn = True
