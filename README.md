@@ -14,7 +14,11 @@ Python | SQLite
 - Checkout with database persistence
 
 ## Context
-Course project focused on backend logic, database integration, and state management in Python.
+Created as part of a Methods & Tools class, focusing on backend logic, database integration, and state management in Python.
+
+<img src="https://github.com/Mikheil17/Shopping-Cart/blob/main/Img1.png" width="400"> <img src="https://github.com/Mikheil17/Shopping-Cart/blob/main/Gif1.gif" width="400">
+<img src="https://github.com/Mikheil17/Shopping-Cart/blob/main/Img2.png" width="400"> <img src="https://github.com/Mikheil17/Shopping-Cart/blob/main/Img2.png" width="400">
+<img src="https://github.com/Mikheil17/Shopping-Cart/blob/main/Img4.png" width="400"> <img src="https://github.com/Mikheil17/Shopping-Cart/blob/main/Img5.png" width="400">
 
 #### How to Run
 
